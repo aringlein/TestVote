@@ -123,10 +123,10 @@ bool reVote = NO;
     //if the user has changed the vote
     if (reVote) {
         //perform a search of the parse server for the VoteCount Object
-        PFQuery *query = [PFQuery queryWithClassName:@"VoteCount"];
-        [query getObjectInBackgroundWithId:countID
-            block:^(PFObject *VoteCount, NSError *error) {
-                                         
+        PFQuery *query = [PFQuery queryWithClassName:@"VoteCount1"];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            
+            PFObject *VoteCount = objects[0];
             //set the vote counts to: the old count - the saved vote + the new vote
             VoteCount[@"switch0"] = @(switchVals[0]+ [VoteCount[@"switch0"] intValue] - storeVote[0]);
             VoteCount[@"switch1"] = @(switchVals[1]+ [VoteCount[@"switch1"] intValue] - storeVote[1]);
@@ -154,7 +154,7 @@ bool reVote = NO;
                 // There was a problem, check error.description
                 NSLog(@"There was a sending error, %@", error.description);
             }
-        }];
+       }];
                                          
         //store the current values in switchVals
         //NSLog(@"%@", VoteCount);
